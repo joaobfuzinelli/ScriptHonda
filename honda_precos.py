@@ -8,9 +8,9 @@ from openpyxl import Workbook
 
 def obter_preco_veiculo(url):
     chrome_options = Options()
-    chrome_options.add_argument("--headless") #sem interface gráfica
+    chrome_options.add_argument("--headless") #sem interface gráfica (Caso queira que mude é só falar)
 
-    # Caminho para o executável do Chrome
+    # Caminho do executável do ChromeWebDriver
     chromedriver_path = r"C:\Users\joaob\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"
     service = Service(executable_path=chromedriver_path)
 
@@ -21,12 +21,12 @@ def obter_preco_veiculo(url):
         driver.get(url)
         
         # Aguardar o carregamento completo da página
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'andes-money-amount__fraction')))
-        
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'andes-money-amount__fraction'))) #Essa Classe que está sendo mencionanda faz referência ao campo de preço do Mercado Livre
+    
         # Extrair nome, fabricante e preço do veículo
-        nome_element = driver.find_element(By.XPATH, '//h1[@class="ui-pdp-title"]')
-        fabricante_element = driver.find_element(By.XPATH, '//span[@class="ui-pdp-subtitle"]')
-        preco_element = driver.find_element(By.CLASS_NAME, 'andes-money-amount__fraction')
+        nome_element = driver.find_element(By.XPATH, '//h1[@class="ui-pdp-title"]') #Título do anúncio
+        fabricante_element = driver.find_element(By.XPATH, '//span[@class="ui-pdp-subtitle"]') #Condição do anúncio (Novo, usado etc)
+        preco_element = driver.find_element(By.CLASS_NAME, 'andes-money-amount__fraction') #Preço do veículo
         
         nome = nome_element.text.strip()
         fabricante = fabricante_element.text.strip()
@@ -67,3 +67,9 @@ if __name__ == '__main__':
         gerar_planilha_excel(dados_veiculo)
     else:
         print(f'Não foi possível obter os dados do veículo de {url}')
+
+#Docstrings abaixo
+
+"""
+Por enquanto decidi deixar apenas um veículo apenas para fazer o teste do script, mas em breve será adicionado mais carros porém de uma forma mais dinâmica. Vale lembrar que o código pode não funcionar em todos os computadores, pois é necessário inserir no código o caminho do Webdriver do Google, mas isso será mudado.
+"""
